@@ -4,7 +4,6 @@ exports.isRecording = exports.stopRecord = exports.recordFrame = exports.takeJPE
 // @ts-ignore
 var ccapture_js_1 = require("ccapture.js");
 var file_saver_1 = require("file-saver");
-var modals_1 = require("./modals");
 var gif_worker_1 = require("./gif.worker");
 // Make is so we don't have to specify workersPath for CCapture.
 var workersBlob = new Blob([gif_worker_1.workerString]);
@@ -29,7 +28,7 @@ function init(_canvas) {
     canvas = _canvas;
     canvas.addEventListener('resize', function () {
         if (capturer) {
-            modals_1.showAlert("Don't resize while recording canvas!!");
+            console.log("Don't resize while recording canvas!!");
         }
     });
 }
@@ -40,7 +39,7 @@ function setVerbose(state) {
 exports.setVerbose = setVerbose;
 function checkCanvas() {
     if (canvas === null) {
-        modals_1.showAlert('No canvas supplied, please call CanvasCapture.init() and pass in canvas element.');
+        console.log('No canvas supplied, please call CanvasCapture.init() and pass in canvas element.');
         return false;
     }
     return true;
@@ -115,11 +114,11 @@ window.addEventListener('keydown', function (e) {
 });
 function beginVideoRecord(options) {
     if (isRecordingGIF) {
-        modals_1.showAlert('You are currently recording a gif, stop recording gif before starting new video record.');
+        console.log('You are currently recording a gif, stop recording gif before starting new video record.');
         return;
     }
     if (isRecordingVideo) {
-        modals_1.showAlert('You are currently recording a video, stop recording current video before starting new video record.');
+        console.log('You are currently recording a video, stop recording current video before starting new video record.');
         return;
     }
     var quality = 100;
@@ -141,11 +140,11 @@ function beginVideoRecord(options) {
 exports.beginVideoRecord = beginVideoRecord;
 function beginGIFRecord(options) {
     if (isRecordingVideo) {
-        modals_1.showAlert('You are currently recording a video, stop recording video before starting new gif record.');
+        console.log('You are currently recording a video, stop recording video before starting new gif record.');
         return;
     }
     if (isRecordingGIF) {
-        modals_1.showAlert('You are currently recording a gif, stop recording current gif before starting new gif record.');
+        console.log('You are currently recording a gif, stop recording current gif before starting new gif record.');
         return;
     }
     // Create a capturer that exports a WebM video
@@ -167,7 +166,7 @@ function takePNGSnapshot(options) {
     }
     canvas.toBlob(function (blob) {
         if (!blob) {
-            modals_1.showAlert('Problem saving PNG, please try again!');
+            console.log('Problem saving PNG, please try again!');
             return;
         }
         file_saver_1.saveAs(blob, ((options === null || options === void 0 ? void 0 : options.name) || 'PNG_Capture') + ".png");
@@ -180,7 +179,7 @@ function takeJPEGSnapshot(options) {
     }
     canvas.toBlob(function (blob) {
         if (!blob) {
-            modals_1.showAlert('Problem saving JPEG, please try again!');
+            console.log('Problem saving JPEG, please try again!');
             return;
         }
         file_saver_1.saveAs(blob, ((options === null || options === void 0 ? void 0 : options.name) || 'JPEG_Capture') + ".jpg");
@@ -192,7 +191,7 @@ function recordFrame() {
         return;
     }
     if (!capturer) {
-        modals_1.showAlert('No valid capturer inited, please call CanvasCapture.beginVideoRecord() or CanvasCapture.beginGIFRecord() first.');
+        console.log('No valid capturer inited, please call CanvasCapture.beginVideoRecord() or CanvasCapture.beginGIFRecord() first.');
         return;
     }
     capturer.capture(canvas);
@@ -202,16 +201,16 @@ exports.recordFrame = recordFrame;
 function startRecord() {
     capturer.start();
     // For video and gif records, we should also throw up an indicator to show that we're in record mode.
-    modals_1.showDot(true);
+    console.log(true);
     numFrames = 0;
 }
 function stopRecord() {
     if (!capturer) {
-        modals_1.showAlert('No valid capturer inited, please call CanvasCapture.beginVideoRecord() or CanvasCapture.beginGIFRecord() first.');
+        console.log('No valid capturer inited, please call CanvasCapture.beginVideoRecord() or CanvasCapture.beginGIFRecord() first.');
         return;
     }
     if (numFrames === 0) {
-        modals_1.showAlert('No frames recorded, call CanvasCapture.recordFrame()');
+        console.log('No frames recorded, call CanvasCapture.recordFrame()');
         return;
     }
     capturer.stop();
@@ -219,11 +218,11 @@ function stopRecord() {
     capturer = null;
     if (isRecordingGIF) {
         // Tell the user that gifs take a sec to process.
-        modals_1.showDialog('Processing...', 'GIF is processing and may take a minute to save.  You can close this window in the meantime.');
+        console.log('Processing...', 'GIF is processing and may take a minute to save.  You can close this window in the meantime.');
     }
     isRecordingGIF = false;
     isRecordingVideo = false;
-    modals_1.showDot(false);
+    console.log(false);
 }
 exports.stopRecord = stopRecord;
 function isRecording() {

@@ -1,7 +1,6 @@
 // @ts-ignore
 import CCapture from 'ccapture.js'
 import { saveAs } from 'file-saver';
-import { console.log, console.log, console.log } from './modals';
 import { workerString } from './gif.worker';
 
 // Make is so we don't have to specify workersPath for CCapture.
